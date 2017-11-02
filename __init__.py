@@ -5,6 +5,8 @@ import qtpy
 
 from xicam.plugins import IGUIPlugin, GUILayout
 
+# Note: qtconsole often fails to guess correctly which qt flavor to use. One of the below snippets will guide it.
+
 # Overload for Py2App
 # def new_load_qt(api_options):
 #     from qtpy import QtCore, QtWidgets, QtSvg
@@ -22,23 +24,28 @@ class IPythonPlugin(IGUIPlugin):
     name = 'IPython'
 
     def __init__(self):
+        # # Enforce global style within the console
         # with open('xicam/gui/style.stylesheet', 'r') as f:
         #     style = f.read()
         # style = (qdarkstyle.load_stylesheet() + style)
 
+        # Setup the kernel
         kernel_manager = QtInProcessKernelManager()
         kernel_manager.start_kernel()
         kernel = kernel_manager.kernel
         kernel.gui = 'qt'
+
+        # Push Xi-cam variables into the kernel
         # kernel.shell.push(dict(plugins.plugins))
 
+        # Continue kernel setup
         kernel_client = kernel_manager.client()
         kernel_client.start_channels()
 
+        # Setup console widget
         def stop():
             kernel_client.stop_channels()
             kernel_manager.shutdown_kernel()
-
         control = RichJupyterWidget()
         control.kernel_manager = kernel_manager
         control.kernel_client = kernel_client
@@ -47,8 +54,7 @@ class IPythonPlugin(IGUIPlugin):
         control.syntax_style = u'monokai'
         control.set_default_style(colors='Linux')
 
-        self.centerwidget = control
-
+        # Setup layout
         self.stages = {'Terminal': GUILayout(control)}
 
         super(IPythonPlugin, self).__init__()

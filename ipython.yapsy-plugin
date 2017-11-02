@@ -3,7 +3,7 @@ Name = IPython
 Module = __init__.py
 
 [Documentation]
-Author = John Smith
-Version = 0.1
+Author = Ronald J. Pandolfi
+Version = 0.1.0
 Website = http://lotsofplugins.com
 Description = My first plugin
