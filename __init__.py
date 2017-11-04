@@ -4,6 +4,8 @@ import sys
 import qtpy
 
 from xicam.plugins import GUIPlugin, GUILayout
+from xicam.plugins import manager as pluginmanager
+from xicam.plugins import observers as pluginobservers
 
 # Note: qtconsole often fails to guess correctly which qt flavor to use. One of the below snippets will guide it.
 
@@ -36,9 +38,12 @@ class IPythonPlugin(GUIPlugin):
         kernel.gui = 'qt'
 
         # Push Xi-cam variables into the kernel
-        # kernel.shell.push(dict(plugins.plugins))
+        kernel.shell.push({plugin.name: plugin for plugin in pluginmanager.getPluginsOfCategory("GUIPlugin")})
 
-        # Continue kernel setup
+        # Observe plugin changes
+        pluginobservers.append(self)
+
+        # Continue kernel setuppluginmanager.getPluginsOfCategory("GUIPlugin")
         kernel_client = kernel_manager.client()
         kernel_client.start_channels()
 
@@ -57,4 +62,10 @@ class IPythonPlugin(GUIPlugin):
         # Setup layout
         self.stages = {'Terminal': GUILayout(control)}
 
+        # Save for later
+        self.kernel = kernel
+
         super(IPythonPlugin, self).__init__()
+
+    def pluginsChanged(self):
+        self.kernel.shell.push({plugin.name: plugin for plugin in pluginmanager.getPluginsOfCategory("GUIPlugin")})
