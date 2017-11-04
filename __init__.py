@@ -3,7 +3,7 @@ import sys
 # Hack to work around PySide being imported from nowhere:
 import qtpy
 
-from xicam.plugins import IGUIPlugin, GUILayout
+from xicam.plugins import GUIPlugin, GUILayout
 
 # Note: qtconsole often fails to guess correctly which qt flavor to use. One of the below snippets will guide it.
 
@@ -20,7 +20,7 @@ from qtconsole.rich_jupyter_widget import RichJupyterWidget
 from qtconsole.inprocess import QtInProcessKernelManager
 
 
-class IPythonPlugin(IGUIPlugin):
+class IPythonPlugin(GUIPlugin):
     name = 'IPython'
 
     def __init__(self):
