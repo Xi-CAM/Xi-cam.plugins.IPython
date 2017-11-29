@@ -6,7 +6,7 @@ Usage: pip install -e .
        twine upload dist/*
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='xicam.plugins.log',
@@ -55,7 +55,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=['xicam.plugins.IPython'],
 
     package_dir={},
 
@@ -83,7 +83,7 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
-    package_data={},
+    package_data={'xicam.plugins.IPython': ['*.yapsy-plugin']},
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
