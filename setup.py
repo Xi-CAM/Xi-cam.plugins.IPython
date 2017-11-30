@@ -9,7 +9,7 @@ Usage: pip install -e .
 from setuptools import setup
 
 setup(
-    name='xicam.plugins.log',
+    name='xicam.plugins.IPython',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
