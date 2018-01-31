@@ -32,9 +32,9 @@ class IPythonPlugin(GUIPlugin):
         # style = (qdarkstyle.load_stylesheet() + style)
 
         # Setup the kernel
-        kernel_manager = QtInProcessKernelManager()
-        kernel_manager.start_kernel()
-        kernel = kernel_manager.kernel
+        self.kernel_manager = QtInProcessKernelManager()
+        self.kernel_manager.start_kernel()
+        kernel = self.kernel_manager.kernel
         kernel.gui = 'qt'
 
         # Push Xi-cam variables into the kernel
@@ -44,16 +44,16 @@ class IPythonPlugin(GUIPlugin):
         pluginobservers.append(self)
 
         # Continue kernel setuppluginmanager.getPluginsOfCategory("GUIPlugin")
-        kernel_client = kernel_manager.client()
-        kernel_client.start_channels()
+        self.kernel_client = self.kernel_manager.client()
+        self.kernel_client.start_channels()
 
         # Setup console widget
         def stop():
-            kernel_client.stop_channels()
-            kernel_manager.shutdown_kernel()
+            self.kernel_client.stop_channels()
+            self.kernel_manager.shutdown_kernel()
         control = RichJupyterWidget()
-        control.kernel_manager = kernel_manager
-        control.kernel_client = kernel_client
+        control.kernel_manager = self.kernel_manager
+        control.kernel_client = self.kernel_client
         control.exit_requested.connect(stop)
         # control.style_sheet = style
         control.syntax_style = u'monokai'
