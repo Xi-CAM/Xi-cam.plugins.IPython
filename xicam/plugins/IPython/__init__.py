@@ -6,6 +6,7 @@ import qtpy
 from xicam.plugins import GUIPlugin, GUILayout
 from xicam.plugins import manager as pluginmanager
 from xicam.plugins import observers as pluginobservers
+from xicam.core import threads
 
 # Note: qtconsole often fails to guess correctly which qt flavor to use. One of the below snippets will guide it.
 
@@ -45,7 +46,7 @@ class IPythonPlugin(GUIPlugin):
 
         # Continue kernel setuppluginmanager.getPluginsOfCategory("GUIPlugin")
         self.kernel_client = self.kernel_manager.client()
-        self.kernel_client.start_channels()
+        threads.invoke_in_main_thread(self.kernel_client.start_channels)
 
         # Setup console widget
         def stop():
@@ -53,7 +54,7 @@ class IPythonPlugin(GUIPlugin):
             self.kernel_manager.shutdown_kernel()
         control = RichJupyterWidget()
         control.kernel_manager = self.kernel_manager
-        control.kernel_client = self.kernel_client
+        threads.invoke_in_main_thread(setattr, control, "kernel_client", self.kernel_client)
         control.exit_requested.connect(stop)
         # control.style_sheet = style
         control.syntax_style = u'monokai'
