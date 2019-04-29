@@ -5,7 +5,7 @@ import qtpy
 
 from xicam.plugins import GUIPlugin, GUILayout
 from xicam.plugins import manager as pluginmanager
-from xicam.plugins import observers as pluginobservers
+from xicam.plugins import manager as pluginmanager
 from xicam.core import threads
 
 # Note: qtconsole often fails to guess correctly which qt flavor to use. One of the below snippets will guide it.
@@ -42,7 +42,7 @@ class IPythonPlugin(GUIPlugin):
         kernel.shell.push({plugin.name: plugin for plugin in pluginmanager.getPluginsOfCategory("GUIPlugin")})
 
         # Observe plugin changes
-        pluginobservers.append(self)
+        pluginmanager.attach(self.pluginsChanged)
 
         # Continue kernel setuppluginmanager.getPluginsOfCategory("GUIPlugin")
         self.kernel_client = self.kernel_manager.client()
