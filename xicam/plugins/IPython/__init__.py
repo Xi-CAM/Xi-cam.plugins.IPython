@@ -39,7 +39,9 @@ class IPythonPlugin(GUIPlugin):
         kernel.gui = 'qt'
 
         # Push Xi-cam variables into the kernel
-        kernel.shell.push({plugin.name: plugin for plugin in pluginmanager.getPluginsOfCategory("GUIPlugin")})
+        kernel.shell.push({plugin.name: plugin for plugin in
+                           pluginmanager.getPluginsOfCategory("GUIPlugin") +
+                           pluginmanager.getPluginsOfCategory("EZPlugin")})
 
         # Observe plugin changes
         pluginmanager.attach(self.pluginsChanged)
@@ -52,6 +54,7 @@ class IPythonPlugin(GUIPlugin):
         def stop():
             self.kernel_client.stop_channels()
             self.kernel_manager.shutdown_kernel()
+
         control = RichJupyterWidget()
         control.kernel_manager = self.kernel_manager
         threads.invoke_in_main_thread(setattr, control, "kernel_client", self.kernel_client)
@@ -69,4 +72,6 @@ class IPythonPlugin(GUIPlugin):
         super(IPythonPlugin, self).__init__()
 
     def pluginsChanged(self):
-        self.kernel.shell.push({plugin.name: plugin for plugin in pluginmanager.getPluginsOfCategory("GUIPlugin")})
+        self.kernel.shell.push({plugin.name: plugin for plugin in
+                                pluginmanager.getPluginsOfCategory("GUIPlugin") +
+                                pluginmanager.getPluginsOfCategory("EZPlugin")})
