@@ -40,8 +40,8 @@ class IPythonPlugin(GUIPlugin):
 
         # Push Xi-cam variables into the kernel
         kernel.shell.push({plugin.name: plugin for plugin in
-                           pluginmanager.getPluginsOfCategory("GUIPlugin") +
-                           pluginmanager.getPluginsOfCategory("EZPlugin")})
+                           pluginmanager.get_plugins_of_type("GUIPlugin") +
+                           pluginmanager.get_plugins_of_type("EZPlugin")})
 
         # Observe plugin changes
         pluginmanager.attach(self.pluginsChanged)
@@ -73,5 +73,5 @@ class IPythonPlugin(GUIPlugin):
 
     def pluginsChanged(self):
         self.kernel.shell.push({plugin.name: plugin for plugin in
-                                pluginmanager.getPluginsOfCategory("GUIPlugin") +
-                                pluginmanager.getPluginsOfCategory("EZPlugin")})
+                                pluginmanager.get_plugins_of_type("GUIPlugin") +
+                                pluginmanager.get_plugins_of_type("EZPlugin")})
